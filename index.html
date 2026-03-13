@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BLU POLYMER - R&R QC Learning</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #004499;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --border: #ddd;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+            color: var(--dark);
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 1.2rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-text {
+            font-weight: 900;
+            font-size: 1rem;
+            line-height: 1.2;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        /* LOGIN */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .login-box h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* MAIN */
+        .container {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* DASHBOARD */
+        .dashboard {
+            padding: 1.5rem 1rem;
+            min-height: calc(100vh - 100px);
+        }
+
+        .welcome-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .welcome-section h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            opacity: 0.9;
+        }
+
+        .lessons-label {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .lesson-btn {
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .lesson-btn:active {
+            transform: scale(0.95);
+        }
+
+        .lesson-btn.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .lesson-btn-num {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .lesson-btn-check {
+            font-size: 1rem;
+        }
+
+        /* LESSON VIEW */
+        .lesson-view {
+            padding: 1rem;
+            min-height: calc(100vh - 100px);
+        }
+
+        .lesson-header {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .lesson-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #ff6b6b);
+            transition: width 0.3s ease;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+            background: white;
+            padding: 0 1rem;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .topics-view {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .topic {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .topic:last-child {
+            border-bottom: none;
+        }
+
+        .topic-num {
+            font-size: 0.75rem;
+            color: #999;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .topic-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .topic-content {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        /* QUIZ */
+        .quiz-view {
+            padding: 1rem;
+        }
+
+        .quiz-header {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .quiz-header h3 {
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .quiz-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+        }
+
+        .quiz-stat {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .quiz-stat-val {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .quiz-stat-label {
+            font-size: 0.65rem;
+            color: #666;
+        }
+
+        .question-box {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .q-num {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .option {
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .option:active {
+            transform: scale(0.98);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: rgba(0, 102, 204, 0.08);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(46, 204, 113, 0.08);
+            color: var(--success);
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background: rgba(231, 76, 60, 0.08);
+            color: var(--danger);
+        }
+
+        /* TEST VIEW */
+        .test-view {
+            padding: 1rem;
+        }
+
+        .test-header {
+            background: linear-gradient(135deg, var(--danger), #ff6b6b);
+            color: white;
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .test-header h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .test-header p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .test-progress {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .test-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--danger), #f39c12);
+            transition: width 0.3s ease;
+        }
+
+        /* RESULTS VIEW */
+        .results-view {
+            padding: 1rem;
+            min-height: calc(100vh - 100px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-card {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.3);
+        }
+
+        .score-num {
+            font-size: 2.2rem;
+            font-weight: 900;
+        }
+
+        .score-denom {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .result-msg {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .result-msg.pass {
+            color: var(--success);
+        }
+
+        .result-msg.fail {
+            color: var(--danger);
+        }
+
+        .result-detail {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .header {
+                padding: 1rem 0.8rem;
+            }
+
+            .logo-text {
+                font-size: 0.9rem;
+            }
+
+            .header-right {
+                gap: 0.8rem;
+            }
+
+            .user-section {
+                font-size: 0.8rem;
+            }
+
+            .lessons-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+
+            .q-text {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1>🔵 BLU POLYMER</h1>
+            <p>R&R QC Professional Training</p>
+            
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="userName" placeholder="Enter your name">
+            </div>
+
+            <button class="login-btn" onclick="login()">Start Learning 🚀</button>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div class="main-app hidden" id="mainApp">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo-circle">🔵</div>
+                <div class="logo-text">BLU POLYMER<br>R&R QC</div>
+            </div>
+            <div class="header-right">
+                <div class="user-section">
+                    👤 <span id="currentUserName">User</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- DASHBOARD SECTION -->
+            <div class="section active" id="dashboard">
+                <div class="dashboard">
+                    <div class="welcome-section">
+                        <h1>Welcome</h1>
+                        <p>Master R&R QC - Blowing, Filling & Printing</p>
+                    </div>
+
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="stat-number" id="totalScore">0</div>
+                            <div class="stat-label">Total Score</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="lessonsCount">0</div>
+                            <div class="stat-label">Lessons</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="testCount">0</div>
+                            <div class="stat-label">Tests</div>
+                        </div>
+                    </div>
+
+                    <div class="lessons-label">SELECT LEVEL</div>
+                    <div class="lessons-grid" id="lessonsGrid"></div>
+
+                    <div id="testButtonsContainer"></div>
+                </div>
+            </div>
+
+            <!-- LESSON VIEW SECTION -->
+            <div class="section" id="lessonView">
+                <div class="lesson-view">
+                    <div class="lesson-header">
+                        <h2 id="lessonTitle">Lesson 1</h2>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('topics')">📚 Topics</button>
+                        <button class="tab-btn" onclick="switchTab('quiz')">❓ Quiz</button>
+                    </div>
+
+                    <div class="tab-content active" id="topicsTab">
+                        <div class="topics-view" id="topicsContent"></div>
+                    </div>
+
+                    <div class="tab-content" id="quizTab">
+                        <div class="quiz-view">
+                            <div class="quiz-header">
+                                <h3>Lesson Quiz (10 Questions)</h3>
+                                <div class="quiz-stats">
+                                    <div class="quiz-stat">
+                                        <div class="quiz-stat-val" id="quizScore">0</div>
+                                        <div class="quiz-stat-label">Score</div>
+                                    </div>
+                                    <div class="quiz-stat">
+                                        <div class="quiz-stat-val" id="quizProgress">0/10</div>
+                                        <div class="quiz-stat-label">Progress</div>
+                                    </div>
+                                    <div class="quiz-stat">
+                                        <div class="quiz-stat-val" id="quizStatus">-</div>
+                                        <div class="quiz-stat-label">Status</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="quizContent"></div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="backToDashboard()">← Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEST VIEW SECTION -->
+            <div class="section" id="testView">
+                <div class="test-view">
+                    <div class="test-header">
+                        <h3 id="testTitle">Test 1</h3>
+                        <p>15 Questions</p>
+                    </div>
+
+                    <div class="test-progress">
+                        <div class="test-progress-bar" id="testProgressBar"></div>
+                    </div>
+
+                    <div id="testContent"></div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="backToDashboard()">← Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESULTS VIEW SECTION -->
+            <div class="section" id="resultsView">
+                <div class="results-view">
+                    <div class="result-card">
+                        <div class="score-circle">
+                            <div class="score-num" id="resultScore">0</div>
+                            <div class="score-denom">/150</div>
+                        </div>
+
+                        <div class="result-msg" id="resultMsg"></div>
+                        <div class="result-detail" id="resultDetail"></div>
+
+                        <div class="button-group">
+                            <button class="btn btn-secondary" onclick="backToDashboard()">Back Home</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATA
+        const lessonsData = [
+            {
+                number: 1,
+                title: 'Blowing Basics',
+                topics: [
+                    { title: 'Classification of Plastics', content: 'Plastics are classified into three main types: Thermoplastics (can be remelted and reshaped), Thermosets (cannot be remelted after curing), and Elastomers (flexible and elastic materials).' },
+                    { title: 'Raw Materials for PCNO Bottles', content: 'PCNO (Pre-Coded Narrow Outlet) bottles are manufactured using polyethylene (HDPE/PP) granules, additives for color enhancement, and stabilizers. Storage life is 4-6 months.' },
+                    { title: 'Vernier Parameters', content: 'Vernier calipers measure critical bottle dimensions: diameter, thickness, and height. These parameters ensure uniform bottle geometry and consistency.' },
+                    { title: 'Height Gauge Usage', content: 'Height gauge instruments measure vertical dimensions including bottle height, neck offset, and step measurements. Proper calibration ensures accuracy within specified tolerances.' },
+                    { title: 'Mold Commissioning Parameters', content: 'Mold commissioning requires checking: mold dimensions, cooling system efficiency, surface finish quality, heating system functionality, safety interlocks, and ejection mechanism.' },
+                    { title: 'Blue Color Detection in PCNO', content: 'Blue color detection in PCNO bottles uses visual inspection against standard color references under controlled lighting conditions (minimum 500 lux).' },
+                    { title: 'Mold Revalidation Frequency', content: 'Every mold must be revalidated once per year to ensure continued compliance with specifications. Checks include dimensional accuracy and functional performance.' },
+                    { title: 'Mold Revalidation Conditions', content: 'Major conditions for mold revalidation: producing specified bottles without defects, verification of critical dimensions, functional tests of systems, and documentation.' },
+                    { title: 'Critical Defects in Blowing', content: 'Critical defects: leakage (bottle fails water retention), pin holes (microscopic holes), material degradation, improper color, and dimensional non-conformance.' },
+                    { title: 'Barrel Cleaning Materials', content: 'Barrel cleaning uses HDPE granules (virgin or regrind) as cleaning material. The typical ratio is 100 parts HDPE cleaning material to prevent contamination.' }
+                ],
+                questions: [
+                    { question: 'What are the three classifications of plastics?', options: ['Thermoplastics, Thermosets, Elastomers', 'Hard, Medium, Soft', 'Raw, Processed, Recycled', 'Natural, Synthetic, Hybrid'], correct: 0 },
+                    { question: 'Storage life of unprinted PCNO bottles?', options: ['4 months', '6 months', '12 months', '2 months'], correct: 0 },
+                    { question: 'Parameters measured using Vernier calipers?', options: ['Diameter, Thickness, Height', 'Weight only', 'Color only', 'Temperature'], correct: 0 },
+                    { question: 'How often must molds be revalidated?', options: ['Once a year', 'Every 2 years', 'Every 5 years', 'Only when damaged'], correct: 0 },
+                    { question: 'Name a critical defect in blowing process:', options: ['Leakage', 'Color variation', 'Dimension mismatch', 'All of above'], correct: 3 },
+                    { question: 'Material used for barrel cleaning?', options: ['HDPE granules', 'Talc powder', 'Water only', 'Chemical solution'], correct: 0 },
+                    { question: 'Method to detect blue color in PCNO?', options: ['Visual inspection with standards', 'UV light', 'Spectrophotometer', 'Weight comparison'], correct: 0 },
+                    { question: 'Critical cooling in mold?', options: ['Proper circulation', 'High temperature', 'Low pressure', 'No circulation'], correct: 0 },
+                    { question: 'Mold surface quality indicated by?', options: ['Finish and texture', 'Color of mold', 'Weight of mold', 'Age of mold'], correct: 0 },
+                    { question: 'Storage condition for PCNO bottles?', options: ['Cool, dry, dust-free away from sunlight', 'Direct sunlight', 'Wet conditions', 'High temperature'], correct: 0 }
+                ]
+            },
+            {
+                number: 2,
+                title: 'Blowing Parameters',
+                topics: [
+                    { title: 'Critical Control Parameters', content: 'Critical control parameters: mold temperature (80-120°C), material temperature (260-290°C), blow pressure (20-30 bar), cycle time (15-45 seconds). Deviation affects quality.' },
+                    { title: 'Online Sampling Plan', content: 'Online sampling: First 3 bottles tested 100%, then random sampling based on production rate. For 3200 bottles/hour, minimum 8 bottles sampled throughout production.' },
+                    { title: 'Leakage Test Procedure', content: 'Leakage test: Fill bottle with water under pressure, submerge in water bath, observe 30 seconds for air bubbles. Any bubbles = rejection.' },
+                    { title: 'Overflow Volume Measurement', content: 'Overflow volume measured in milliliters using calibrated cylinders. Fill bottle to marked reference line, measure excess overflow at specified height.' },
+                    { title: 'Neck Slant and Ovality Calculation', content: 'Neck slant = difference in diameters at different heights. Ovality = (max diameter - min diameter)/2. Limits: slant <2mm, ovality <1mm.' },
+                    { title: 'Minor Defects Classification', content: 'Minor defects: slight color variation, minor surface marks, small flash lines, slight dimensional variation within tolerance, minor visual imperfections.' },
+                    { title: 'Blow-pin Size Specifications', content: 'Blow-pin size varies by specification. For 500ml bottles, diameter typically 8-12mm with specific design for proper air distribution.' },
+                    { title: 'Preventive Maintenance Schedule', content: 'Monthly maintenance: mold inspection, cooling line flushing, heating element checking, ejector lubrication, pressure gauge calibration, safety verification.' },
+                    { title: 'Mold Lifetime Expectancy', content: 'Typical mold lifetime: 500,000 to 1,000,000 cycles depending on maintenance quality. Can be extended through proper care and timely repairs.' },
+                    { title: 'Mold Storage Precautions', content: 'Storage: clean, dry environment (humidity <50%), protective coating against rust, protective caps on cavities, padded supports, temperature 15-25°C.' }
+                ],
+                questions: [
+                    { question: 'Typical mold temperature in blowing?', options: ['80-120°C', '30-50°C', '150-200°C', '250-300°C'], correct: 0 },
+                    { question: 'Material temperature range?', options: ['260-290°C', '100-150°C', '350-400°C', '50-100°C'], correct: 0 },
+                    { question: 'Blow pressure range:', options: ['20-30 bar', '5-10 bar', '50-60 bar', '1-5 bar'], correct: 0 },
+                    { question: 'Leakage test involves:', options: ['Water submersion', 'Weight measurement', 'Color inspection', 'Size checking'], correct: 0 },
+                    { question: 'Ovality limit in bottles:', options: ['<1mm', '<5mm', '<10mm', '<0.5mm'], correct: 0 },
+                    { question: 'Neck slant limit:', options: ['<2mm', '<5mm', '<10mm', '<0.5mm'], correct: 0 },
+                    { question: 'Mold lifetime:', options: ['500,000-1M cycles', '100,000 cycles', '10M cycles', '50,000 cycles'], correct: 0 },
+                    { question: 'Online sampling for 3200/hour:', options: ['Min 8 bottles', 'Only 1', 'All bottles', 'No sampling'], correct: 0 },
+                    { question: 'Humidity for storage:', options: ['<50%', '>80%', '60-70%', '70-80%'], correct: 0 },
+                    { question: 'Storage temperature:', options: ['15-25°C', '-10 to 10°C', '30-40°C', '50-70°C'], correct: 0 }
+                ]
+            },
+            {
+                number: 3,
+                title: 'Mold Commissioning',
+                topics: [
+                    { title: 'Commissioning Process', content: 'Mold commissioning: validation when new/refurbished mold installed. Involves systematic testing, trial runs, verification that all specs are met.' },
+                    { title: 'Dimensional Accuracy', content: 'Dimensional verification checks: cavity dimensions, core dimensions, parting line alignment, wall thickness uniformity using CMM or Vernier.' },
+                    { title: 'Cooling System Verification', content: 'Cooling verification: proper circulation, temperature uniformity, no leaks, adequate cooling rate, fluid quality. Flow rate 20-40 liters/minute.' },
+                    { title: 'Heating System Commissioning', content: 'Heating system: element functionality, thermostat accuracy, temperature uniformity, response time, safety limits. Maintains barrel temperature.' },
+                    { title: 'Safety Interlocks Testing', content: 'Safety testing: mold closure detection, ejector retraction, emergency stop, pressure relief, all sensors. Complete documentation required.' },
+                    { title: 'Ejection Mechanism Testing', content: 'Ejection testing: smooth operation, uniform force, proper timing, cycle reliability, part release. All pins operate synchronously.' },
+                    { title: 'Trial Production Runs', content: 'Trial runs: 1,000-2,000 bottles minimum. Every 100th bottle inspected. All parameters recorded and compared against specs.' },
+                    { title: 'Quality Verification', content: 'Quality checks: visual inspection, dimensional check (50 min), leakage test (all trial bottles), color check, weight verification.' },
+                    { title: 'Documentation Requirements', content: 'Documentation: setup records, parameter measurements, trial results, inspection reports, certifications, approval sign-off.' },
+                    { title: 'Sign-off and Release', content: 'Final sign-off: production, quality, maintenance approval. Released for production only after all tests pass and documentation complete.' }
+                ],
+                questions: [
+                    { question: 'What is mold commissioning?', options: ['Validation of mold', 'Cleaning', 'Repair', 'Storage'], correct: 0 },
+                    { question: 'Tool for dimensional check:', options: ['CMM or Vernier', 'Scale', 'Color meter', 'Thermometer'], correct: 0 },
+                    { question: 'Coolant circulation rate:', options: ['20-40 L/min', '5-10 L/min', '100+ L/min', '1-2 L/min'], correct: 0 },
+                    { question: 'Minimum trial production:', options: ['1,000-2,000', '100', '500', '50'], correct: 0 },
+                    { question: 'Inspection frequency:', options: ['Every 100th', 'Every bottle', 'Every 1000th', 'No inspection'], correct: 0 },
+                    { question: 'Critical documents:', options: ['Setup, results, sign-off', 'Only photos', 'No docs', 'Verbal only'], correct: 0 },
+                    { question: 'Safety testing includes:', options: ['Interlocks, stop, sensors', 'Only look', 'Color', 'Weight'], correct: 0 },
+                    { question: 'Ejection test verifies:', options: ['Smooth operation', 'Color', 'Cooling', 'Pressure'], correct: 0 },
+                    { question: 'Heating maintains:', options: ['Barrel temperature', 'Only cool', 'Room temp', 'Color'], correct: 0 },
+                    { question: 'Sign-off requires:', options: ['Production, Quality, Maintenance', 'Only maintenance', 'Only quality', 'Only production'], correct: 0 }
+                ]
+            },
+            {
+                number: 4,
+                title: 'Color Detection & Quality',
+                topics: [
+                    { title: 'Color Detection Methods', content: 'Color detection: visual comparison against approved standards under controlled lighting (minimum 500 lux), standard maintained under controlled storage, trained personnel.' },
+                    { title: 'Blue Color Specifications', content: 'Blue PCNO bottles: customer approved, maintained within ΔE <1.5, compared to standard master chip, documented in batch records.' },
+                    { title: 'Color Standards Maintenance', content: 'Standards stored: away from sunlight, 20-25°C temperature, protected from dust, replaced annually, certified authentic.' },
+                    { title: 'Lighting for Assessment', content: 'Proper lighting: 500+ lux intensity, 45° illumination angle, daylight/D65 standard, booth-type assessment area.' },
+                    { title: 'Color Defects Classification', content: 'Defects: off-shade (outside spec), bleeding (color migration), fading (color loss), blushing (whitish). Classified critical/major.' },
+                    { title: 'Personnel Training', content: 'Personnel must: understand specs, recognize variations, perform consistent evaluation, maintain color vision, retrain annually.' },
+                    { title: 'Batch Color Consistency', content: 'Consistency: first bottle assessed, middle/end samples tested, all match standard, variation within tolerance, batch approved.' },
+                    { title: 'Color Failure Documentation', content: 'Failures documented: bottle ID, issue type, standard used, date/time, assessed by, corrective action.' },
+                    { title: 'Seasonal Color Variations', content: 'Seasonal variations: temperature changes, pigment behavior, raw material variation. Adjustments to masterbatch maintain consistency.' },
+                    { title: 'Customer Acceptance Criteria', content: 'Criteria in PO: approved standard, deviation range (ΔE), assessment method, approval authority. Compliance before shipment.' }
+                ],
+                questions: [
+                    { question: 'Color detection method:', options: ['Visual comparison', 'Weight', 'Size', 'Temperature'], correct: 0 },
+                    { question: 'Lighting intensity:', options: ['500+ lux', '100 lux', '1000 lux', '50 lux'], correct: 0 },
+                    { question: 'Standards storage temp:', options: ['20-25°C', '50-60°C', '0-5°C', '30-40°C'], correct: 0 },
+                    { question: 'Color diff limit (ΔE):', options: ['<1.5', '<5', '<10', '<0.5'], correct: 0 },
+                    { question: 'Standards replaced:', options: ['Annually', 'Every 5 years', '10 years', 'Never'], correct: 0 },
+                    { question: 'Personnel retraining:', options: ['Annually', '3 years', '5 years', 'Once'], correct: 0 },
+                    { question: 'Lighting angle:', options: ['45°', '90°', '0°', '180°'], correct: 0 },
+                    { question: 'Light standard:', options: ['D65 daylight', 'Red', 'UV', 'Infrared'], correct: 0 },
+                    { question: 'Color defects:', options: ['Off-shade, bleeding, fading, blushing', 'Only size', 'Only weight', 'Only temp'], correct: 0 },
+                    { question: 'Batch consistency:', options: ['First, middle, end tested', 'Only first', 'Random', 'No test'], correct: 0 }
+                ]
+            },
+            {
+                number: 5,
+                title: 'Filling Process',
+                topics: [
+                    { title: 'Filling Process Overview', content: 'Filling: controlled product transfer with strict quality. Key: precise weight (±2%), temperature (15-25°C), pressure monitoring, contamination prevention, quality verification.' },
+                    { title: 'SWAM Rules', content: 'SWAM (Single Weight And Measurement): each container to spec, ±2% tolerance, consistency throughout batch, digital recording, statistical tracking.' },
+                    { title: 'Critical Control Parameters', content: 'Parameters: fill weight, temperature, pressure, fill time, closure pressure, cap force, environment. All logged real-time with alerts.' },
+                    { title: 'Oil Transfer Procedure', content: 'Transfer: sanitation of system, source verification, OPRP filtration, temperature maintenance, batch documentation. Clean after each change.' },
+                    { title: 'Online Sampling Procedure', content: 'Sampling: first 5 100%, then systematic, min 8 standard, weight/leakage tested, results recorded and trended.' },
+                    { title: 'Storage Tank Management', content: 'Tanks: proper ID, regular cleaning, moisture prevention, temperature control, level monitoring, documentation. Day tanks 1000-5000L.' },
+                    { title: 'Filter Types', content: 'OPRP-1: 25 micron, 2-3 bar. OPRP-2: 5 micron, 0.5-1 bar. Both need inspection and replacement based on pressure.' },
+                    { title: 'Cap Material and Properties', content: 'Caps HDPE/PP: food-grade, moisture barrier, -10 to 70°C, snap-fit, tamper evidence. Pre-heat 60-80°C for better sealing.' },
+                    { title: 'Closure Quality Parameters', content: 'Quality: cap force (10-20 N), sealing integrity, torque consistency, tamper band, visual integrity. First/last 100% inspection.' },
+                    { title: 'Environmental Controls', content: 'Controls: 15-25°C (±2°C), humidity <60%, ISO 7, light 300+ lux, hygiene protocols. Regular monitoring with records.' }
+                ],
+                questions: [
+                    { question: 'Fill weight tolerance:', options: ['±2%', '±5%', '±10%', '±1%'], correct: 0 },
+                    { question: 'Filling temperature:', options: ['15-25°C', '5-10°C', '30-40°C', '50-60°C'], correct: 0 },
+                    { question: 'SWAM is:', options: ['Single Weight And Measurement', 'Storage Water And Material', 'System Weight Assessment', 'Sampling Weight Analysis'], correct: 0 },
+                    { question: 'OPRP-1 pore size:', options: ['25 micron', '5 micron', '50 micron', '100 micron'], correct: 0 },
+                    { question: 'OPRP-2 pore size:', options: ['5 micron', '25 micron', '50 micron', '1 micron'], correct: 0 },
+                    { question: 'Cap pre-heat temp:', options: ['60-80°C', '20-30°C', '100-120°C', '40-50°C'], correct: 0 },
+                    { question: 'Cap material:', options: ['HDPE or PP', 'PVC', 'Glass', 'Metal'], correct: 0 },
+                    { question: 'Cap force:', options: ['10-20 N', '5-10 N', '30-50 N', '1-5 N'], correct: 0 },
+                    { question: 'First bottle check:', options: ['100%', 'No', 'Random', '10%'], correct: 0 },
+                    { question: 'Humidity limit:', options: ['<60%', '<80%', '<40%', '<90%'], correct: 0 }
+                ]
+            },
+            {
+                number: 6,
+                title: 'Filling Quality',
+                topics: [
+                    { title: 'Critical Defects in Filling', content: 'Defects: leakage (fails water test), improper capping (seal fail), contamination (foreign), underfill/overfill (tolerance), broken. Each needs 100% detection.' },
+                    { title: 'Filling Leakage Test', content: 'Leakage: pressurize to 2 bar, submerge in water, observe 30 sec for bubbles. Any bubbles = failure. Batch checked for issues.' },
+                    { title: 'Underfill/Overfill Detection', content: 'Underfill: weight below min (product loss). Overfill: weight above max (excess cost, leak). Both via automatic scale with bands.' },
+                    { title: 'Contamination Prevention', content: 'Sources: improper cleaning, airborne, personnel, equipment. Prevention: HEPA filters, clean room, access control, sanitation, maintenance.' },
+                    { title: 'Capping Defects', content: 'Defects: improper thread, cross-thread, incomplete seal, cracked caps, missing. Causes: worn equipment, speed issue. Prevention: maintenance, quality control.' },
+                    { title: 'Weighing System Accuracy', content: 'System: monthly calibration minimum, certified weights, ±0.1% accuracy, environment control (temp, vibration), documented.' },
+                    { title: 'Batch Release Criteria', content: 'Release when: all checks pass, Cpk >1.33, inspection complete, docs complete, approval obtained.' },
+                    { title: 'In-Process Quality Checks', content: 'Checks: weight hourly, leakage every 2 hrs, sealing every 3 hrs, visual continuous, environment every shift.' },
+                    { title: 'Root Cause Analysis', content: 'Oil smear causes: cleaning, humidity, temperature, contaminated bottles, equipment. 5-Why method with documented investigation.' },
+                    { title: 'Control Chart Monitoring', content: 'Charts track: fill weight, leakage, defects, environment. Daily review, out-of-control triggers investigation and action.' }
+                ],
+                questions: [
+                    { question: 'Critical defect in filling:', options: ['Leakage', 'Minor color', 'Label off-center', 'Slight dent'], correct: 0 },
+                    { question: 'Leakage test pressure:', options: ['2 bar', '1 bar', '5 bar', '10 bar'], correct: 0 },
+                    { question: 'Weight tolerance:', options: ['±2%', '±10%', '±5%', '±1%'], correct: 0 },
+                    { question: 'Calibration frequency:', options: ['Monthly min', 'Weekly', 'Yearly', 'Only startup'], correct: 0 },
+                    { question: 'Cpk requirement:', options: ['>1.33', '>1', '>0.5', '>2'], correct: 0 },
+                    { question: 'Weight check:', options: ['Every hour', 'Every 4 hrs', '8 hrs', 'Never'], correct: 0 },
+                    { question: 'Leakage check:', options: ['Every 2 hrs', 'Every 1 hr', 'Every 6 hrs', 'Daily'], correct: 0 },
+                    { question: 'Sealing check:', options: ['Every 3 hrs', 'Every 1 hr', 'Every 8 hrs', 'Never'], correct: 0 },
+                    { question: 'Contamination prevent:', options: ['HEPA, clean room, access', 'None', 'Only clean', 'Only monitor'], correct: 0 },
+                    { question: 'RCA method:', options: ['5-Why', 'Guess', 'Symptoms', 'No analysis'], correct: 0 }
+                ]
+            },
+            {
+                number: 7,
+                title: 'Printing Basics',
+                topics: [
+                    { title: 'Printing Process Overview', content: 'Printing applies brand info and decorations on bottles. Involves: flame treatment, ink application, drying, quality inspection. Precision and consistency critical.' },
+                    { title: 'Flame Treatment Purpose', content: 'Flame treatment increases dyne from ~32 to 50+ dynes. Purpose: improves adhesion, consistent wetting, prevents peeling, enhances quality. Distance 2-3cm, 0.5-1 sec.' },
+                    { title: 'Dyne Values and Measurement', content: 'Dyne: surface tension unit. Flame-treated 50-55 dynes. Measured with dyne test pens: ink forms film = acceptable. Test multiple locations.' },
+                    { title: 'Ink and Catalyst Ratio', content: 'Ratio typically 10:1 volume (1000ml ink + 100ml catalyst). Exact depends on formulation. Essential for: curing, adhesion, shelf life. Valid 8 hours.' },
+                    { title: 'Ink Adhesion Testing', content: 'Tests: Cross-hatch (5x5 grid, tape - <10% loss), Scuff (gauze 50x - no visible wear), ESCR (chemical soak - no cracking).' },
+                    { title: 'Screen Material and Mesh', content: 'Material: polyester or stainless steel. Mesh: 120-200 (coarse), 200-300 (medium), 300-400 (fine). Selection affects resolution and ink transfer.' },
+                    { title: 'Screen Maintenance', content: 'Change frequency: 50,000-100,000 impressions. Maintenance: daily clean, solvent rinse, monthly inspect, replace when worn.' },
+                    { title: 'Printed Bottle Shelf Life', content: 'Shelf life: 12-18 months under 20-25°C, <60% humidity. Older may fade or lose adhesion. FIFO rotation essential.' },
+                    { title: 'Legal and Brand Areas', content: 'Legal: manufacturer, weight, batch code, date, warnings. Brand: logo, name, marketing. Layout customer approved.' },
+                    { title: 'Print Defects Classification', content: 'Critical: complete peel, illegible. Major: partial loss, minor illegible. Minor: ink spots, color variation. Helps prioritize actions.' }
+                ],
+                questions: [
+                    { question: 'Flame treatment distance:', options: ['2-3 cm', '1 cm', '5 cm', '10 cm'], correct: 0 },
+                    { question: 'Flame duration:', options: ['0.5-1 sec', '3-5 sec', '10-15 sec', '0.1 sec'], correct: 0 },
+                    { question: 'Dyne after treatment:', options: ['50-55', '30', '80', '20'], correct: 0 },
+                    { question: 'Ink to catalyst:', options: ['10:1', '1:1', '5:1', '20:1'], correct: 0 },
+                    { question: 'Mixed ink valid:', options: ['8 hrs', '1 hr', '24 hrs', '4 hrs'], correct: 0 },
+                    { question: 'Cross-hatch accept:', options: ['<10% loss', '<50%', '<25%', 'No loss'], correct: 0 },
+                    { question: 'Scuff test:', options: ['50 rubs', '20', '100', 'No rub'], correct: 0 },
+                    { question: 'Fine prints mesh:', options: ['300-400', '120-200', '200-300', '50-100'], correct: 0 },
+                    { question: 'Screen replace:', options: ['50k-100k impressions', 'Never', '1M', '10k'], correct: 0 },
+                    { question: 'Shelf life:', options: ['12-18 months', '3 months', '36 months', '1 month'], correct: 0 }
+                ]
+            },
+            {
+                number: 8,
+                title: 'Printing Quality',
+                topics: [
+                    { title: 'Print Resolution Standards', content: 'Minimum 300 DPI for clear text. 600+ DPI for intricate designs. Resolution affects readability, color definition, brand quality.' },
+                    { title: 'Color Standards - Pantone', content: 'Pantone system standardizes colors. Specific code per design. Standard as reference. Batch matched within ΔE <1.5.' },
+                    { title: 'Ink Durability Requirements', content: 'Ink must be: UV resistant (fade prevention), chemical resistant, temp stable (-10 to 80°C), abrasion resistant, 12+ months lasting.' },
+                    { title: 'Misregistration and Alignment', content: 'Misregistration: color layers not aligned. Tolerance ±1mm. Causes: worn, speed, marks. Prevention: setup, calibration, consistency.' },
+                    { title: 'Mouth Locking Pressure', content: 'Pressure typically 10-20 N to secure bottle. Ensures: no movement, consistent position, no damage. Monitored each shift.' },
+                    { title: 'Offline Lot Size', content: 'Offline for 45ml: 500-1000 bottles per lot. Allows traceability. Records: number, date, shift, operator, approval.' },
+                    { title: 'Scuff Test Procedure', content: 'Procedure: gauze pad, moderate pressure, 50 circular rubs, assess wear/loss. Accept: no visible loss/fading. Fail: adjust and retest.' },
+                    { title: 'ESCR Test Procedure', content: 'ESCR: immerse in chemical solvent, 24-72 hrs, assess cracking/degradation. Ensures chemical resistance.' },
+                    { title: 'Print Peel Root Causes', content: 'Causes: low dyne value, improper ink, contamination, excessive temp during cure, rapid environment changes.' },
+                    { title: 'Reference Sample Maintenance', content: 'Samples: controlled storage (20-25°C, <60%), protected sunlight/dust, daily batch compare, annual replace, certified.' }
+                ],
+                questions: [
+                    { question: 'Min print resolution:', options: ['300 DPI', '100 DPI', '150 DPI', '50 DPI'], correct: 0 },
+                    { question: 'Color standard:', options: ['Pantone', 'RGB', 'CMYK only', 'No standard'], correct: 0 },
+                    { question: 'Alignment tolerance:', options: ['±1mm', '±5mm', '±10mm', '±0.5mm'], correct: 0 },
+                    { question: 'Mouth lock pressure:', options: ['10-20 N', '5-10 N', '30-50 N', '1-5 N'], correct: 0 },
+                    { question: 'Color diff limit:', options: ['<1.5', '<5', '<10', '<0.5'], correct: 0 },
+                    { question: 'Scuff rub count:', options: ['50', '20', '100', '10'], correct: 0 },
+                    { question: 'ESCR duration:', options: ['24-72 hrs', '1-2 hrs', '100+ hrs', 'No time'], correct: 0 },
+                    { question: 'Offline lot size 45ml:', options: ['500-1000', '100', '5000', 'No limit'], correct: 0 },
+                    { question: 'Sample storage temp:', options: ['20-25°C', '5-10°C', '40-50°C', 'Any'], correct: 0 },
+                    { question: 'Print peel cause:', options: ['Low dyne', 'High dyne', 'Correct', 'No treatment'], correct: 0 }
+                ]
+            },
+            {
+                number: 9,
+                title: 'Advanced QC',
+                topics: [
+                    { title: 'Statistical Process Control', content: 'SPC uses control charts: X-bar, R for dimensions; p-charts for defect rates; C-charts for count. Detects drift before defects. Daily analysis.' },
+                    { title: 'Capability Analysis (Cpk)', content: 'Cpk measures centering and spread. Cpk >1.33 = capable. Formula: min[(USL-mean)/3σ, (mean-LSL)/3σ]. <1.0 needs improvement. Recalc when change.' },
+                    { title: 'Root Cause Analysis', content: 'RCA 5-Why: identify, ask why 5 times, dig deeper, find root, implement correction. PDCA: Plan, Do, Check, Act.' },
+                    { title: 'Preventive Maintenance', content: 'Maintenance: oil analysis (wear metals), temperature trending (health), vibration analysis (mechanical), predictive scheduling. Extends life, reduces failures.' },
+                    { title: 'Contamination Risk Assessment', content: 'Risk sources: environmental (dust, moisture), personnel (contact, clothing), equipment (wear), material (foreign). Mitigation reduces probability/impact.' },
+                    { title: 'Batch Traceability System', content: 'Traceability: raw material batches, dates/times, personnel, parameters, test results, disposition. Enables rapid recall if issues.' },
+                    { title: 'Compliance Documentation', content: 'Docs: test certificates, calibration, training, equipment logs, batch records, audits. Retained per regulations (3+ years).' },
+                    { title: 'Customer Complaint Analysis', content: 'Complaints: investigate root cause, quantify impact, contain immediately, follow-up test, systemic improvement, communicate. Track trends.' },
+                    { title: 'Quality Audits and Reviews', content: 'Audits: against procedures, trained auditors, documented findings, corrective tracking. External audits verify. Management reviews ensure improvement.' },
+                    { title: 'Continuous Improvement Culture', content: 'Improvement: process audits, employee suggestions, benchmarking, pilot test, document lessons. Goal: incremental enhancement of quality and efficiency.' }
+                ],
+                questions: [
+                    { question: 'Cpk requirement:', options: ['>1.33', '>1', '>0.5', '>2'], correct: 0 },
+                    { question: 'RCA method:', options: ['5-Why', 'Guess', 'No method', 'Observation'], correct: 0 },
+                    { question: 'PDCA is:', options: ['Plan, Do, Check, Act', 'Process, Design, Check, Analyze', 'Plan, Design, Confirm, Audit', 'None'], correct: 0 },
+                    { question: 'Traceability includes:', options: ['Materials, dates, personnel, results', 'Only final', 'No docs', 'Random'], correct: 0 },
+                    { question: 'Contamination sources:', options: ['Environment, personnel, equipment, material', 'Only dust', 'No environment', 'Only water'], correct: 0 },
+                    { question: 'Record retention:', options: ['3+ years', '1 year', '6 months', 'Not required'], correct: 0 },
+                    { question: 'SPC uses:', options: ['X-bar, R, p-charts', 'Only photos', 'No charts', 'Only tables'], correct: 0 },
+                    { question: 'Maintenance includes:', options: ['Oil, temp, vibration', 'Only visual', 'No analysis', 'Cost only'], correct: 0 },
+                    { question: 'Complaint process:', options: ['Investigate, contain, improve, communicate', 'Ignore', 'No process', 'Apologize'], correct: 0 },
+                    { question: 'Improvement goal:', options: ['Incremental enhance', 'Stay same', 'Decrease quality', 'Random'], correct: 0 }
+                ]
+            },
+            {
+                number: 10,
+                title: 'Final Certification',
+                topics: [
+                    { title: 'Blowing Process Summary', content: 'Blowing: material prep, mold setup, param validation, production with checks, quality verify, document. Critical: temp control, pressure, monitoring.' },
+                    { title: 'Filling Process Summary', content: 'Filling: tank prep, line validate, material transfer, fill with weight, cap with torque, batch verify. Key: ±2%, leakage, environment.' },
+                    { title: 'Printing Process Summary', content: 'Printing: bottle prep (flame), design setup, ink mix, print (registration), dry (temp), inspect. Critical: adhesion, color, defect prevent.' },
+                    { title: 'Quality Documentation', content: 'Docs: batch records (materials, params, times), test results (dims, weights, leakage, adhesion), personnel (training, sign), equipment (logs, calibration).' },
+                    { title: 'Regulatory Compliance', content: 'Compliance: FSSAI standards, packaging regulations, food safety, labeling, traceability. Audits verify; non-compliance = penalties/recalls.' },
+                    { title: 'Risk Management and Control', content: 'Risk management: hazard ID (bio, chemical, physical), probability, impact, control, monitor. Hierarchy: eliminate, reduce, mitigate, accept.' },
+                    { title: 'Employee Training and Certification', content: 'Training: onboarding, job-specific, safety, quality awareness, periodic retrain. Records prove competency at critical positions.' },
+                    { title: 'Auditing and Verification', content: 'Audits: annual internal covering compliance, docs, training, calibration, safety. Findings documented, corrective tracked. External verify effectiveness.' },
+                    { title: 'Emergency Response Procedures', content: 'Procedures: recall plan, equipment failure, contamination, personnel safety, communication. Annual drills; all trained.' },
+                    { title: 'Excellence Through Integration', content: 'Excellence: integrate training, procedures, equipment, docs, monitoring, improvement. Success: all org levels commitment, strong quality culture.' }
+                ],
+                questions: [
+                    { question: 'Blowing success factors:', options: ['Temp, pressure, monitoring', 'Only speed', 'Only color', 'No factors'], correct: 0 },
+                    { question: 'Filling weight:', options: ['±2%', '±10%', '±5%', '±1%'], correct: 0 },
+                    { question: 'Flame treatment:', options: ['Essential adhesion', 'Optional', 'Not needed', 'Harmful'], correct: 0 },
+                    { question: 'Documentation:', options: ['Batch, tests, personnel, logs', 'Only final', 'No docs', 'Random'], correct: 0 },
+                    { question: 'Main standard:', options: ['FSSAI', 'None', 'Internal', 'Optional'], correct: 0 },
+                    { question: 'Risk hierarchy:', options: ['Eliminate, reduce, mitigate, accept', 'Accept, reduce, mitigate, eliminate', 'Random', 'None'], correct: 0 },
+                    { question: 'Audit frequency:', options: ['Annually', 'Never', '5 years', 'Monthly'], correct: 0 },
+                    { question: 'Training records:', options: ['Prove competency', 'Not important', 'For show', 'Not required'], correct: 0 },
+                    { question: 'Emergency drills:', options: ['Annually', 'Never', 'Optional', 'Quarterly'], correct: 0 },
+                    { question: 'Excellence requires:', options: ['Training, procedures, equipment, docs, monitoring', 'Only equipment', 'Only training', 'Random'], correct: 0 }
+                ]
+            }
+        ];
+
+        let currentUser = null;
+        let userScores = {};
+        let currentLessonNum = 1;
+        let quizAnswers = {};
+        let testAnswers = {};
+        let currentTestNum = 0;
+
+        // LOGIN
+        function login() {
+            const name = document.getElementById('userName').value.trim();
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+
+            currentUser = { name };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            loadUserProgress();
+
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('currentUserName').textContent = name;
+
+            renderDashboard();
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('userName').value = '';
+        }
+
+        // PROGRESS
+        function loadUserProgress() {
+            const saved = localStorage.getItem(`progress_${currentUser.name}`);
+            if (saved) {
+                userScores = JSON.parse(saved);
+            } else {
+                userScores = {};
+            }
+        }
+
+        function saveUserProgress() {
+            localStorage.setItem(`progress_${currentUser.name}`, JSON.stringify(userScores));
+        }
+
+        // DASHBOARD
+        function renderDashboard() {
+            const grid = document.getElementById('lessonsGrid');
+            let html = '';
+
+            for (let i = 1; i <= 10; i++) {
+                const lesson = lessonsData[i-1];
+                const score = userScores[`lesson${i}`] || 0;
+                const isUnlocked = i === 1 || (userScores[`lesson${i-1}`] && userScores[`lesson${i-1}`] > 0);
+
+                html += `
+                    <button class="lesson-btn ${!isUnlocked ? 'locked' : ''}" ${isUnlocked ? `onclick="openLesson(${i})"` : ''} title="${lesson.title}">
+                        <div class="lesson-btn-num">${i}</div>
+                        <div class="lesson-btn-check">${!isUnlocked ? '🔒' : '✅'}</div>
+                    </button>
+                `;
+            }
+
+            grid.innerHTML = html;
+
+            // Stats
+            const completedLessons = Object.keys(userScores).filter(k => k.startsWith('lesson') && userScores[k] > 0).length;
+            const totalScore = Object.values(userScores).reduce((a, b) => (typeof b === 'number' ? a + b : a), 0);
+            const testsPassed = Object.keys(userScores).filter(k => k.startsWith('test') && userScores[k] >= 100).length;
+
+            document.getElementById('totalScore').textContent = totalScore;
+            document.getElementById('lessonsCount').textContent = completedLessons;
+            document.getElementById('testCount').textContent = testsPassed;
+
+            // Test buttons
+            const testContainer = document.getElementById('testButtonsContainer');
+            let testHtml = '<div class="lessons-label" style="margin-top: 2rem;">TESTS</div><div class="lessons-grid">';
+
+            const tests = [
+                { num: 1, lessons: '1-2' },
+                { num: 2, lessons: '3-4' },
+                { num: 3, lessons: '5-6' },
+                { num: 4, lessons: '7-8' },
+                { num: 5, lessons: '9-10' }
+            ];
+
+            tests.forEach(test => {
+                const lesson1 = test.num * 2 - 1;
+                const lesson2 = test.num * 2;
+                const canTakeTest = userScores[`lesson${lesson1}`] && userScores[`lesson${lesson2}`];
+                const testScore = userScores[`test${test.num}`] || 0;
+
+                testHtml += `
+                    <button class="lesson-btn ${!canTakeTest ? 'locked' : ''}" ${canTakeTest ? `onclick="openTest(${test.num})"` : ''}>
+                        <div class="lesson-btn-num">T${test.num}</div>
+                        <div class="lesson-btn-check">${testScore > 0 ? '✅' : '🧪'}</div>
+                    </button>
+                `;
+            });
+
+            testHtml += '</div>';
+            testContainer.innerHTML = testHtml;
+        }
+
+        // LESSON
+        function openLesson(num) {
+            currentLessonNum = num;
+            const lesson = lessonsData[num - 1];
+
+            document.getElementById('lessonTitle').textContent = `Level ${num}: ${lesson.title}`;
+            document.getElementById('progressBar').style.width = ((num / 10) * 100) + '%';
+
+            // Topics
+            let topicsHtml = '';
+            lesson.topics.forEach((topic, idx) => {
+                topicsHtml += `
+                    <div class="topic">
+                        <div class="topic-num">Topic ${idx + 1}</div>
+                        <div class="topic-title">${topic.title}</div>
+                        <div class="topic-content">${topic.content}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('topicsContent').innerHTML = topicsHtml;
+
+            // Quiz
+            renderQuiz(lesson);
+
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('lessonView').classList.add('active');
+        }
+
+        function renderQuiz(lesson) {
+            let quizHtml = '';
+            lesson.questions.forEach((q, idx) => {
+                quizHtml += `
+                    <div class="question-box">
+                        <div class="q-num">Question ${idx + 1}/10</div>
+                        <div class="q-text">${q.question}</div>
+                        <div class="options">
+                            ${q.options.map((opt, optIdx) => `
+                                <div class="option" onclick="selectAnswer(${idx}, ${optIdx}, ${q.correct}, false)">
+                                    ${opt}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('quizContent').innerHTML = quizHtml;
+        }
+
+        function selectAnswer(qIdx, optIdx, correct, isTest) {
+            if (isTest) {
+                testAnswers[qIdx] = optIdx;
+            } else {
+                quizAnswers[qIdx] = optIdx;
+            }
+
+            const boxes = document.querySelectorAll('.question-box');
+            const options = boxes[qIdx].querySelectorAll('.option');
+
+            options.forEach((opt, idx) => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+                if (idx === optIdx) {
+                    opt.classList.add('selected');
+                    if (idx === correct) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                    }
+                } else if (idx === correct) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            // Update score for lesson quiz
+            if (!isTest) {
+                let score = 0;
+                const lesson = lessonsData[currentLessonNum - 1];
+                lesson.questions.forEach((q, idx) => {
+                    if (quizAnswers[idx] === q.correct) {
+                        score += 10;
+                    }
+                });
+
+                document.getElementById('quizScore').textContent = score;
+                const answered = Object.keys(quizAnswers).length;
+                document.getElementById('quizProgress').textContent = answered + '/10';
+
+                // Auto-save after first answer
+                if (!userScores[`lesson${currentLessonNum}`]) {
+                    userScores[`lesson${currentLessonNum}`] = score;
+                    saveUserProgress();
+
+                    // Check if test should unlock
+                    const testNum = Math.ceil(currentLessonNum / 2);
+                    const lesson1 = testNum * 2 - 1;
+                    const lesson2 = testNum * 2;
+
+                    if (currentLessonNum === lesson2 && userScores[`lesson${lesson1}`]) {
+                        setTimeout(() => {
+                            alert(`✅ Test ${testNum} Available!\n\n🧪 Complete Lessons ${lesson1} & ${lesson2} to take test.`);
+                        }, 500);
+                    }
+                }
+            } else {
+                // Update test progress
+                const progress = (Object.keys(testAnswers).length / 15) * 100;
+                document.getElementById('testProgressBar').style.width = progress + '%';
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+
+            document.getElementById(tab + 'Tab').classList.add('active');
+            event.target.classList.add('active');
+
+            if (tab === 'quiz') {
+                quizAnswers = {};
+                renderQuiz(lessonsData[currentLessonNum - 1]);
+                document.getElementById('quizScore').textContent = '0';
+                document.getElementById('quizProgress').textContent = '0/10';
+            }
+        }
+
+        // TEST
+        function openTest(testNum) {
+            currentTestNum = testNum;
+            const lesson1 = testNum * 2 - 1;
+            const lesson2 = testNum * 2;
+
+            if (!userScores[`lesson${lesson1}`] || !userScores[`lesson${lesson2}`]) {
+                alert('Complete both lessons first!');
+                return;
+            }
+
+            document.getElementById('testTitle').textContent = `Test ${testNum}`;
+
+            testAnswers = {};
+            const questions = [];
+            const l1Questions = lessonsData[lesson1 - 1].questions.slice(0, 8);
+            const l2Questions = lessonsData[lesson2 - 1].questions.slice(0, 7);
+
+            questions.push(...l1Questions, ...l2Questions);
+
+            let testHtml = '';
+            questions.forEach((q, idx) => {
+                testHtml += `
+                    <div class="question-box">
+                        <div class="q-num">Question ${idx + 1}/15</div>
+                        <div class="q-text">${q.question}</div>
+                        <div class="options">
+                            ${q.options.map((opt, optIdx) => `
+                                <div class="option" onclick="selectAnswer(${idx}, ${optIdx}, ${q.correct}, true)">
+                                    ${opt}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            testHtml += `<div class="button-group" style="margin-top: 2rem;">
+                <button class="btn btn-danger" onclick="submitTest(${questions.length})">Submit Test</button>
+            </div>`;
+
+            document.getElementById('testContent').innerHTML = testHtml;
+
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('testView').classList.add('active');
+        }
+
+        function submitTest(totalQuestions) {
+            let score = 0;
+            const allQuestions = [];
+            const lesson1 = currentTestNum * 2 - 1;
+            const lesson2 = currentTestNum * 2;
+
+            allQuestions.push(...lessonsData[lesson1 - 1].questions.slice(0, 8));
+            allQuestions.push(...lessonsData[lesson2 - 1].questions.slice(0, 7));
+
+            allQuestions.forEach((q, idx) => {
+                if (testAnswers[idx] === q.correct) {
+                    score += 10;
+                }
+            });
+
+            userScores[`test${currentTestNum}`] = score;
+            saveUserProgress();
+
+            document.getElementById('resultScore').textContent = score;
+            if (score >= 100) {
+                document.getElementById('resultMsg').textContent = '✅ PASSED!';
+                document.getElementById('resultMsg').classList.add('pass');
+            } else {
+                document.getElementById('resultMsg').textContent = '❌ FAILED';
+                document.getElementById('resultMsg').classList.add('fail');
+            }
+            document.getElementById('resultDetail').textContent = `Score: ${score}/150 points`;
+
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('resultsView').classList.add('active');
+        }
+
+        function backToDashboard() {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('dashboard').classList.add('active');
+            renderDashboard();
+        }
+
+        // INIT
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('currentUser');
+            if (saved) {
+                currentUser = JSON.parse(saved);
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('currentUserName').textContent = currentUser.name;
+                loadUserProgress();
+                renderDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
